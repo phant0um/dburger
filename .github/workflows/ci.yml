@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: gitleaks (segredos)
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest dir --no-banner /repo
+
+      - name: contrato estrutural (offline)
+        run: make test vet
+
+      - name: lint
+        run: bash scripts/lint.sh
+
+  # A suíte de integração (Oracle real) roda localmente via `make test-integration`
+  # (contêiner gvenzl/oracle-free). Fica fora do CI público por peso da imagem;
+  # o verify-report documenta a rodada real.

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# pre-commit — formatter (higiene de texto) + gitleaks. Instalado via:
+#   git config core.hooksPath .githooks
+set -u
+cd "$(dirname "$0")/.."
+
+if command -v gitleaks >/dev/null 2>&1 && gitleaks git --help >/dev/null 2>&1; then
+  gitleaks git --pre-commit --no-banner --redact . || {
+    echo "pre-commit: gitleaks achou segredo — remova antes de commitar" >&2
+    exit 1
+  }
+fi
+
+python3 - <<'PY'
+import pathlib, subprocess, sys
+
+fix = False
+for p in pathlib.Path(".").rglob("*"):
+    if not p.is_file() or ".git" in p.parts or "dist" in p.parts:
+        continue
+    try:
+        data = p.read_bytes()
+    except OSError:
+        continue
+    if b"\0" in data:
+        continue
+    text = data.decode("utf-8", errors="replace")
+    new = "\n".join(line.rstrip() for line in text.splitlines())
+    if text:
+        new += "\n"
+    if new != text:
+        p.write_text(new, encoding="utf-8")
+        fix = True
+        print(f"pre-commit: normalizado {p}")
+sys.exit(0)
+PY
