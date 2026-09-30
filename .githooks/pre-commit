@@ -5,7 +5,7 @@ set -u
 cd "$(dirname "$0")/.."
 
 if command -v gitleaks >/dev/null 2>&1 && gitleaks git --help >/dev/null 2>&1; then
-  gitleaks git --pre-commit --no-banner --redact . || {
+  gitleaks git --staged --no-banner --redact . || {
     echo "pre-commit: gitleaks achou segredo — remova antes de commitar" >&2
     exit 1
   }
