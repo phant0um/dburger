@@ -1,0 +1,99 @@
+{
+  "versao": 1,
+  "casos": [
+    {
+      "id": "demo",
+      "descricao": "Caso de demonstração: 5 hambúrgueres ganha 10% de desconto.",
+      "cliente": "Ana Souza",
+      "qtd": 5,
+      "preco": "120.00",
+      "esperado": [
+        "Cliente: Ana Souza",
+        "Quantidade de hambúrgueres: 5",
+        "Preço total a pagar: R$ 108,00",
+        "Desconto aplicado: R$ 12,00"
+      ]
+    },
+    {
+      "id": "fronteira-3",
+      "descricao": "Fronteira inferior do desconto: exatamente 3 hambúrgueres NÃO ganha desconto.",
+      "cliente": "Bruno Lima",
+      "qtd": 3,
+      "preco": "90.00",
+      "esperado": [
+        "Cliente: Bruno Lima",
+        "Quantidade de hambúrgueres: 3",
+        "Preço total a pagar: R$ 90,00",
+        "Desconto aplicado: R$ 0,00"
+      ]
+    },
+    {
+      "id": "fronteira-4",
+      "descricao": "Fronteira superior do desconto: 4 hambúrgueres já ganha 10%.",
+      "cliente": "Carla Nunes",
+      "qtd": 4,
+      "preco": "90.00",
+      "esperado": [
+        "Cliente: Carla Nunes",
+        "Quantidade de hambúrgueres: 4",
+        "Preço total a pagar: R$ 81,00",
+        "Desconto aplicado: R$ 9,00"
+      ]
+    },
+    {
+      "id": "teto-tipos",
+      "descricao": "Teto dos tipos: 999 hambúrgueres e preço 99999,99 não estouram; desconto arredonda para 10000,00.",
+      "cliente": "Diego Alves",
+      "qtd": 999,
+      "preco": "99999.99",
+      "esperado": [
+        "Cliente: Diego Alves",
+        "Quantidade de hambúrgueres: 999",
+        "Preço total a pagar: R$ 89999,99",
+        "Desconto aplicado: R$ 10000,00"
+      ]
+    },
+    {
+      "id": "zerado",
+      "descricao": "Pedido sem valor: desconto zero, preço zero.",
+      "cliente": "Eva Prado",
+      "qtd": 1,
+      "preco": "0.00",
+      "esperado": [
+        "Cliente: Eva Prado",
+        "Quantidade de hambúrgueres: 1",
+        "Preço total a pagar: R$ 0,00",
+        "Desconto aplicado: R$ 0,00"
+      ]
+    },
+    {
+      "id": "nome-40-bytes",
+      "descricao": "Nome com exatamente 40 bytes cabe em VARCHAR2(40 BYTE).",
+      "cliente": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "qtd": 2,
+      "preco": "50.00",
+      "esperado": [
+        "Cliente: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "Quantidade de hambúrgueres: 2",
+        "Preço total a pagar: R$ 50,00",
+        "Desconto aplicado: R$ 0,00"
+      ]
+    },
+    {
+      "id": "nome-41-bytes-erro",
+      "descricao": "Negativo plantado: nome de 41 bytes deve estourar VARCHAR2(40 BYTE).",
+      "cliente": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "qtd": 2,
+      "preco": "50.00",
+      "esperar_erro": "ORA-06502"
+    },
+    {
+      "id": "qtd-1000-erro",
+      "descricao": "Negativo plantado: 1000 hambúrgueres deve estourar NUMBER(3,0).",
+      "cliente": "Felipe Rocha",
+      "qtd": 1000,
+      "preco": "50.00",
+      "esperar_erro": "ORA-06502"
+    }
+  ]
+}
